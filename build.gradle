@@ -1,0 +1,167 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+plugins {
+    id 'com.android.application' version '7.1.2' apply false
+    id 'com.android.library' version '7.1.2' apply false
+    id 'org.jetbrains.kotlin.android' version '1.5.30' apply false
+    //上传 JitPack 插件依赖
+//    classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
+//    id 'android-maven-gradle-plugin' version '2.1' apply false
+}
+
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+task hello {
+    doLast {
+        println 'Hello World!'
+        logger.error('error日志信息')
+        logger.quiet('quiet日志信息')
+        logger.warn('warn日志信息')
+        logger.lifecycle('lifecycle日志信息')
+        logger.info('info日志信息')
+        logger.debug('debug日志信息')
+    }
+}
+
+task printStringVar {
+    def name = "张三"
+    println '单引号的变量计算：${name}'
+    println "单引号的变量计算：${name}"
+}
+
+task printList {
+    def numList = [1, 2, 3, 4, 5, 6]
+    println numList.getClass().name
+
+    println numList[1] //访问第二个元素
+    println numList[-1]//访问最后一个元素
+    println numList[-2]//访问倒数第二个元素
+    println numList[1..3]//访问第二个到第四个元素
+    //列表迭代
+    numList.each {
+        println it
+    }
+}
+
+task printlnMap {
+    def map = ['width': 1024, 'height': 768]
+    println map.getClass().name
+
+    println map['width']
+    println map.height
+
+    map.each {
+        println "key:${it.key},value:${it.value}"
+    }
+}
+
+task invokeMethod {
+    methodAdd(1, 2)
+    methodAdd 3, 4
+}
+
+def methodAdd(int a, int b) {
+    println "methodAdd:${a + b}"
+}
+
+//JavaBean
+task javaBean {
+    Person person = new Person()
+    println "名字是：${person.name}"
+    person.name = "张三"
+    println "名字是：${person.name}"
+    println "年龄是：${person.age}"
+
+}
+
+class Person {
+    private String name
+
+    public int getAge() {
+        return 20
+    }
+}
+
+//闭包
+task helloClosure {
+    //使用我们的自定义闭包
+    customEach {
+        println it
+    }
+}
+
+static def customEach(closure) {
+    for (int i in 0..10) {
+        closure(i)
+    }
+}
+
+//向闭包传递参数
+task closureTask {
+    //多个参数
+    eachMap { k, v ->
+        println "${k} is ${v}"
+    }
+}
+
+def eachMap(closure) {
+    def map = ["name": "张三", "age": "14"]
+    map.each {
+        closure(it.key, it.value)
+    }
+}
+
+//依赖任务
+task ex35Hello {
+    println "hello"
+}
+
+task ex35World {
+    println "world"
+}
+
+task ex35MultiTask {
+    dependsOn ex35Hello, ex35World
+    println "multiTask"
+}
+
+//任务的执行分析
+//def Task myTask = task customTask(type: CustomTask)
+//
+//myTask.doLast {
+//    println 'Task 执行之后 doLast'
+//}
+//
+//myTask.doFirst {
+//    println 'Task 执行之前 doFirst'
+//}
+//
+//class CustomTask extends DefaultTask {
+//    @TaskAction
+//    def doSelf() {
+//        println 'Task 自己本身在执行 doSelf'
+//    }
+//}
+
+//任务排序
+task orderTask1 {
+
+    doFirst {
+        println "<< taskOrder1 doFirst 的打印"
+    }
+    doLast {
+        println "<< taskOrder1 doLast 的打印"
+    }
+}
+task orderTask2 {
+    doFirst {
+        println "<< taskOrder2 doFirst 的打印"
+    }
+    doLast {
+        println "<< taskOrder2 doLast 的打印"
+    }
+}
+
+orderTask1.mustRunAfter(orderTask2)
