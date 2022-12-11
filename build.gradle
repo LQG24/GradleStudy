@@ -1,10 +1,13 @@
-
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
-    id 'com.android.application' version '7.1.2' apply false
-    id 'com.android.library' version '7.1.2' apply false
+    id 'com.android.application' version '7.0.0' apply false
+    id 'com.android.library' version '7.0.0' apply false
     id 'org.jetbrains.kotlin.android' version '1.5.30' apply false
+    //上传 JitPack 插件依赖
+//    classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
+//    id 'android-maven-gradle-plugin' version '2.1' apply false
 }
+
 
 task clean(type: Delete) {
     delete rootProject.buildDir
@@ -144,19 +147,20 @@ task ex35MultiTask {
 
 //任务排序
 task orderTask1 {
-
-    doFirst{
-        println "<< taskOrder1 doFirst 的打印"
+    def flag = true
+    doFirst {
+        flag = false
+        println "<< taskOrder1 doFirst 的打印:${flag}"
     }
-    doLast{
-        println "<< taskOrder1 doLast 的打印"
+    doLast {
+        println "<< taskOrder1 doLast 的打印:${flag}"
     }
 }
 task orderTask2 {
-    doFirst{
+    doFirst {
         println "<< taskOrder2 doFirst 的打印"
     }
-    doLast{
+    doLast {
         println "<< taskOrder2 doLast 的打印"
     }
 }
