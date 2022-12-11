@@ -166,3 +166,16 @@ task orderTask2 {
 }
 
 orderTask1.mustRunAfter(orderTask2)
+
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'com.github.LQG24'
+            artifactId = 'customPlugin'
+            version = '1.0.1'
+
+            from components.java
+        }
+    }
+}

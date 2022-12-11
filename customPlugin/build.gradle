@@ -13,14 +13,3 @@ buildscript {
     }
 }
 //==============================JitPack 上传插件配置 end=======================
-publishing {
-    publications {
-        maven(MavenPublication) {
-            groupId = 'com.github.LQG24'
-            artifactId = 'customPlugin'
-            version = '1.0.1'
-
-            from components.java
-        }
-    }
-}
